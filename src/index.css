@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SLIIT Gaming Community Design System
+   Premium, minimalist gaming aesthetic with electric cyan accents
+*/
+
+@layer base {
+  :root {
+    /* Light Theme - Clean, premium, gaming-inspired */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Electric Cyan - Primary gaming accent */
+    --primary: 187 100% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft slate for secondary elements */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Vibrant accent for highlights */
+    --accent: 187 100% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 187 100% 42%;
+
+    --radius: 0.75rem;
+
+    /* Custom gaming colors */
+    --gaming-cyan: 187 100% 42%;
+    --gaming-cyan-light: 187 100% 95%;
+    --gaming-blue: 217 91% 60%;
+    --gaming-purple: 271 91% 65%;
+    --gaming-gradient: linear-gradient(135deg, hsl(187 100% 42%) 0%, hsl(217 91% 60%) 100%);
+    --gaming-gradient-subtle: linear-gradient(135deg, hsl(187 100% 95%) 0%, hsl(217 91% 95%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-gaming: 0 20px 40px -15px hsl(187 100% 42% / 0.25);
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5% 26%;
+    --sidebar-primary: 240 6% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 187 100% 42%;
+  }
+
+  .dark {
+    /* Dark Theme - Deep navy with electric accents */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 187 100% 50%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 187 100% 50%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 187 100% 50%;
+
+    /* Dark gaming colors */
+    --gaming-cyan: 187 100% 50%;
+    --gaming-cyan-light: 187 50% 15%;
+    --gaming-blue: 217 91% 65%;
+    --gaming-purple: 271 91% 70%;
+    --gaming-gradient: linear-gradient(135deg, hsl(187 100% 50%) 0%, hsl(217 91% 65%) 100%);
+    --gaming-gradient-subtle: linear-gradient(135deg, hsl(187 30% 15%) 0%, hsl(217 30% 15%) 100%);
+
+    /* Dark shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-gaming: 0 20px 40px -15px hsl(187 100% 50% / 0.35);
+
+    /* Dark sidebar */
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 240 5% 96%;
+    --sidebar-primary: 224 76% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 16%;
+    --sidebar-accent-foreground: 240 5% 96%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 187 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Gaming gradient text */
+  .text-gaming-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gaming-gradient);
+  }
+
+  /* Gaming card with hover effect */
+  .gaming-card {
+    @apply bg-card rounded-xl border border-border transition-all duration-300;
+    box-shadow: var(--shadow-md);
+  }
+
+  .gaming-card:hover {
+    @apply border-primary/30;
+    box-shadow: var(--shadow-gaming);
+    transform: translateY(-4px);
+  }
+
+  /* Gaming button glow effect */
+  .gaming-glow {
+    @apply relative;
+  }
+
+  .gaming-glow::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300;
+    background: var(--gaming-gradient);
+    filter: blur(20px);
+    z-index: -1;
+  }
+
+  .gaming-glow:hover::before {
+    @apply opacity-50;
+  }
+
+  /* Section container */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border border-border/50;
+  }
+
+  /* Timeline line */
+  .timeline-line {
+    @apply absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2;
+    background: var(--gaming-gradient);
+  }
+}
+
+@layer utilities {
+  /* Smooth fade in animation */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stagger delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+}
