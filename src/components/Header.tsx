@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun, Gamepad2 } from "lucide-react";
+import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/useTheme";
+import gcLogo from "@/assets/gc-logo.png";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -37,14 +38,12 @@ export function Header() {
       <div className="section-container">
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-gaming-gradient flex items-center justify-center">
-              <Gamepad2 className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-bold text-lg text-foreground">SLIIT</span>
-              <span className="font-bold text-lg text-gaming-gradient ml-1">Gaming</span>
-            </div>
+          <a href="#home" className="flex items-center group">
+            <img 
+              src={gcLogo} 
+              alt="SLIIT Gaming Community" 
+              className="h-10 md:h-12 w-auto"
+            />
           </a>
 
           {/* Desktop Navigation */}

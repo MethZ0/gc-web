@@ -58,10 +58,10 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         gaming: {
-          cyan: "hsl(var(--gaming-cyan))",
-          "cyan-light": "hsl(var(--gaming-cyan-light))",
           blue: "hsl(var(--gaming-blue))",
-          purple: "hsl(var(--gaming-purple))",
+          "blue-light": "hsl(var(--gaming-blue-light))",
+          orange: "hsl(var(--gaming-orange))",
+          "orange-light": "hsl(var(--gaming-orange-light))",
         },
       },
       borderRadius: {
@@ -110,10 +110,6 @@ export default {
         float: "float 3s ease-in-out infinite",
         pulse: "pulse 2s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
-      },
-      backgroundImage: {
-        "gaming-gradient": "var(--gaming-gradient)",
-        "gaming-gradient-subtle": "var(--gaming-gradient-subtle)",
       },
       boxShadow: {
         gaming: "var(--shadow-gaming)",
