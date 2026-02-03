@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // If we are building for production ('build'), use the repo name.
-  // If we are running locally ('serve'), use the root path.
-  base: mode === "production" ? "/gc-web/" : "/",
+  // Use root path for Netlify deployment
+  base: "/",
 }));
