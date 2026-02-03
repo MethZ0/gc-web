@@ -430,7 +430,7 @@ export function HeroSection() {
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
-              onClick={() => window.location.href = "/community"}
+              onClick={() => window.location.href = "/about"}
               size="lg"
               variant="outline"
               className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
