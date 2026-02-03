@@ -4,7 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+// We destructure 'command' in addition to 'mode'
+export default defineConfig(({ mode, command }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -12,11 +13,16 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [
+    react(),
+    mode === "development" && componentTagger()
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/gc-web/",
+  // If we are building for production ('build'), use the repo name.
+  // If we are running locally ('serve'), use the root path.
+  base: command === 'build' ? "/gc-web/" : "/",
 }));
