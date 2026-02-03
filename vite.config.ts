@@ -25,4 +25,7 @@ export default defineConfig(({ mode }) => ({
   // If we are building for production ('build'), use the repo name.
   // If we are running locally ('serve'), use the root path.
   base: mode === "production" ? "/gc-web/" : "/",
+  build: {
+    minify: false, // disable minification in dev mode
+  },
 }));
