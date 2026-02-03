@@ -27,6 +27,7 @@ const controllerSymbols = [
     position: { top: "15%", left: "8%" },
     animation: { x: [0, 15, 0], y: [0, -20, 0] },
     duration: 8,
+    delay: 0,
   },
   {
     id: "cross",
@@ -36,6 +37,7 @@ const controllerSymbols = [
     position: { top: "25%", right: "10%" },
     animation: { x: [0, -20, 0], y: [0, 15, 0] },
     duration: 10,
+    delay: 0.5,
   },
   {
     id: "triangle",
@@ -45,6 +47,7 @@ const controllerSymbols = [
     position: { bottom: "30%", left: "5%" },
     animation: { x: [0, 10, 0], y: [0, 12, 0] },
     duration: 9,
+    delay: 1,
   },
   {
     id: "square",
@@ -54,24 +57,7 @@ const controllerSymbols = [
     position: { bottom: "25%", right: "8%" },
     animation: { x: [0, -12, 0], y: [0, -18, 0] },
     duration: 11,
-  },
-  {
-    id: "trigger-left",
-    path: "M10,50 Q10,10 50,10 Q90,10 90,50 L80,90 Q50,95 20,90 Z",
-    viewBox: "0 0 100 100",
-    size: { base: 20, md: 55, lg: 70 },
-    position: { top: "45%", left: "12%" },
-    animation: { x: [0, 8, 0], y: [0, -10, 0] },
-    duration: 12,
-  },
-  {
-    id: "trigger-right",
-    path: "M10,50 Q10,10 50,10 Q90,10 90,50 L80,90 Q50,95 20,90 Z",
-    viewBox: "0 0 100 100",
-    size: { base: 20, md: 55, lg: 70 },
-    position: { top: "40%", right: "12%" },
-    animation: { x: [0, -8, 0], y: [0, 12, 0] },
-    duration: 13,
+    delay: 1.5,
   },
 ];
 
@@ -79,41 +65,45 @@ interface FloatingSymbolProps {
   symbol: typeof controllerSymbols[0];
   currentImage: string;
   imageKey: number;
+  mouseX: number;
+  mouseY: number;
 }
 
-function FloatingSymbol({ symbol, currentImage, imageKey }: FloatingSymbolProps) {
+function FloatingSymbol({ symbol, currentImage, imageKey, mouseX, mouseY }: FloatingSymbolProps) {
   const clipId = `clip-${symbol.id}`;
+  
+  // Calculate parallax offset based on mouse position (subtle effect)
+  const parallaxX = (mouseX - 0.5) * 8; // ±4px movement
+  const parallaxY = (mouseY - 0.5) * 8;
   
   return (
     <motion.div
-      className="absolute z-20 pointer-events-none"
+      className="absolute z-20 pointer-events-none hidden md:block"
       style={{
         ...symbol.position,
         width: `clamp(${symbol.size.base}px, 8vw, ${symbol.size.lg}px)`,
         height: `clamp(${symbol.size.base}px, 8vw, ${symbol.size.lg}px)`,
+        x: parallaxX,
+        y: parallaxY,
       }}
-      animate={symbol.animation}
+      animate={{
+        x: symbol.animation.x.map(val => val + parallaxX),
+        y: symbol.animation.y.map(val => val + parallaxY),
+      }}
       transition={{
         duration: symbol.duration,
         repeat: Infinity,
         ease: "easeInOut",
+        delay: symbol.delay,
+        repeatType: "loop",
       }}
     >
-      {/* Glow effect */}
-      <div 
-        className="absolute inset-0 rounded-full opacity-40 blur-xl"
-        style={{
-          background: "hsl(var(--primary) / 0.3)",
-        }}
-      />
-      
-      {/* Glassmorphism container */}
-      <div className="relative w-full h-full">
-        {/* Glass border/outline */}
+      {/* Glassmorphism container with backdrop blur */}
+      <div className="relative w-full h-full backdrop-blur-sm rounded-2xl overflow-hidden">
+        {/* Outer stroke with rounded edges */}
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox={symbol.viewBox}
-          style={{ filter: "drop-shadow(0 0 8px hsl(var(--primary) / 0.4))" }}
         >
           <defs>
             <clipPath id={clipId}>
@@ -121,47 +111,51 @@ function FloatingSymbol({ symbol, currentImage, imageKey }: FloatingSymbolProps)
             </clipPath>
           </defs>
           
-          {/* Outer glow stroke */}
+          {/* Outer primary stroke at 50% opacity */}
           <path
             d={symbol.path}
             fill="none"
             stroke="hsl(var(--primary) / 0.5)"
             strokeWidth="3"
-            className="dark:stroke-primary/40"
+            vectorEffect="non-scaling-stroke"
           />
         </svg>
         
-        {/* Masked image container */}
+        {/* Masked image container with glass background */}
         <div 
-          className="absolute inset-0 overflow-hidden backdrop-blur-sm"
+          className="absolute inset-0 overflow-hidden rounded-2xl"
           style={{ 
-            clipPath: `path('${symbol.path}')`,
+            clipPath: `url(#${clipId})`,
           }}
         >
-          {/* Glass background */}
-          <div className="absolute inset-0 bg-background/20 dark:bg-background/30" />
+          {/* Glass background layer */}
+          <div className="absolute inset-0 bg-background/5" />
           
-          {/* Carousel image with fade transition */}
+          {/* Carousel image with crossfade and scale */}
           <AnimatePresence mode="wait">
             <motion.img
               key={imageKey}
               src={currentImage}
               alt=""
-              className="absolute inset-0 w-full h-full object-cover scale-150"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                transform: "scale(1.5)",
+                objectPosition: "center",
+              }}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.7 }}
+              animate={{ opacity: 0.95 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
           </AnimatePresence>
           
-          {/* Glass overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/10" />
+          {/* Glass overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
         </div>
         
-        {/* Inner highlight */}
+        {/* Inner highlight stroke */}
         <svg
-          className="absolute inset-0 w-full h-full opacity-60"
+          className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox={symbol.viewBox}
         >
           <path
@@ -169,6 +163,7 @@ function FloatingSymbol({ symbol, currentImage, imageKey }: FloatingSymbolProps)
             fill="none"
             stroke="hsl(var(--background) / 0.3)"
             strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
           />
         </svg>
       </div>
@@ -181,6 +176,7 @@ export function HeroSection() {
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadlineRef = useRef<HTMLParagraphElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
@@ -284,15 +280,20 @@ export function HeroSection() {
 
   const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
 
-  // Track mouse movement for spotlight
+  // Track mouse movement for spotlight and parallax
   function handleMouseMove(e: React.MouseEvent) {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    
+    setMousePosition({ x, y });
     setCursor({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     });
   }
   function handleMouseLeave() {
+    setMousePosition({ x: 0.5, y: 0.5 });
     setCursor(null);
   }
 
@@ -313,7 +314,7 @@ export function HeroSection() {
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-full object-cover opacity-50 dark:opacity-30"
+                  className="w-full h-full object-cover opacity-80 dark:opacity-60"
                 />
               </div>
             ))}
@@ -324,13 +325,13 @@ export function HeroSection() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background: cursor
-              ? `radial-gradient(circle 160px at ${cursor.x}px ${cursor.y}px, transparent 0%, rgba(20,20,20,0.7) 80%)`
-              : "rgba(20,20,20,0.7)",
+              ? `radial-gradient(circle 200px at ${cursor.x}px ${cursor.y}px, transparent 0%, rgba(20,20,20,0.3) 80%)`
+              : "rgba(20,20,20,0.3)",
             transition: "background 0.2s",
             zIndex: 1,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/50 to-background" />
       </div>
 
       {/* Floating Controller Symbol Elements */}
@@ -340,6 +341,8 @@ export function HeroSection() {
           symbol={symbol}
           currentImage={currentImage}
           imageKey={selectedIndex}
+          mouseX={mousePosition.x}
+          mouseY={mousePosition.y}
         />
       ))}
 
