@@ -1,11 +1,10 @@
 import { Gamepad2, Mail, MapPin, Phone, Instagram, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
 
 const quickLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Events", href: "#events" },
-  { name: "Membership", href: "#membership" },
-  { name: "Team", href: "#team" },
+  { name: "Home", href: "/" },
+  { name: "About Us", href: "/about" },
+  { name: "Events", href: "/events" },
+  { name: "Contact Us", href: "/contact" },
 ];
 
 const socialLinks = [
@@ -77,13 +76,13 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <a href="mailto:gaming@sliit.lk" className="hover:text-primary transition-colors">
-                  gaming@sliit.lk
+                <a href="mailto:sliitgc@gmail.com" className="hover:text-primary transition-colors">
+                  sliitgc@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span>+94 11 754 4801</span>
+                <span>+94 77 051 9235</span>
               </li>
             </ul>
           </div>

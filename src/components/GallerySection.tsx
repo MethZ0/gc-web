@@ -1,6 +1,10 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface GalleryImage {
   id: number;
@@ -75,6 +79,45 @@ export function GallerySection() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    if (ref.current) {
+      // Heading fade-in
+      gsap.fromTo(
+        ref.current.querySelector(".gallery-heading"),
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+      // Staggered grid
+      gsap.fromTo(
+        ref.current.querySelectorAll(".gallery-card"),
+        { opacity: 0, scale: 0.92, y: 30 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }
+  }, [isInView]);
+
   const openLightbox = (image: GalleryImage, index: number) => {
     setSelectedImage(image);
     setCurrentIndex(index);
@@ -105,35 +148,24 @@ export function GallerySection() {
   };
 
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-20 md:py-28 bg-muted/30">
       <div className="section-container" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mb-16"
-        >
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-            Gallery
-          </span>
+        <div className="max-w-3xl mx-auto text-center mb-16 gallery-heading">
           <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">
             Moments We've Captured
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-primary text-lg">
             Relive the excitement from our past events and tournaments.
           </p>
           <div className="w-24 h-1 bg-gaming-gradient mx-auto rounded-full mt-6" />
-        </motion.div>
+        </div>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {galleryImages.map((image, index) => (
-            <motion.div
+            <div
               key={image.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              className={`relative overflow-hidden rounded-xl cursor-pointer group ${
+              className={`relative overflow-hidden rounded-xl cursor-pointer group gallery-card ${
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}
               onClick={() => openLightbox(image, index)}
@@ -164,7 +196,7 @@ export function GallerySection() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -176,7 +208,7 @@ export function GallerySection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-md flex items-center justify-center"
+              className="fixed inset-0 z-50 bg-primary/30 backdrop-blur-md flex items-center justify-center"
               onClick={closeLightbox}
               onKeyDown={handleKeyDown}
               tabIndex={0}
@@ -231,14 +263,14 @@ export function GallerySection() {
                 />
                 
                 {/* Image Info */}
-                <div className="absolute -bottom-16 left-0 right-0 text-center">
-                  <h3 className="text-primary-foreground font-semibold text-lg">
+                <div className="absolute -bottom-15 left-0 right-0 text-center">
+                  <h3 className="text-accent font-semibold text-lg">
                     {selectedImage.title}
                   </h3>
-                  <p className="text-primary-foreground/70 text-sm">
+                  <p className="text-accent/80 text-sm">
                     {selectedImage.event} • {selectedImage.date}
                   </p>
-                  <p className="text-primary-foreground/50 text-xs mt-2">
+                  <p className="text-accent/70 text-xs mt-2">
                     {currentIndex + 1} / {galleryImages.length}
                   </p>
                 </div>

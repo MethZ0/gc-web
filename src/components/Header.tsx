@@ -6,11 +6,11 @@ import { useTheme } from "@/hooks/useTheme";
 import gcLogo from "@/assets/gc-logo.png";
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Events", href: "#events" },
-  { name: "Membership", href: "#membership" },
-  { name: "Team", href: "#team" },
+  { name: "Home", href: "/" },
+  { name: "About Us", href: "/about" },
+  { name: "Events", href: "/events" },
+  { name: "Contact Us", href: "/contact" },
+  // { name: "Membership", href: "#membership" },
 ];
 
 export function Header() {
@@ -38,7 +38,7 @@ export function Header() {
       <div className="section-container">
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center group">
+          <a href="/" className="flex items-center group">
             <img 
               src={gcLogo} 
               alt="SLIIT Gaming Community" 
@@ -66,7 +66,7 @@ export function Header() {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full"
+              className="rounded-full hidden"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {theme === "light" ? (

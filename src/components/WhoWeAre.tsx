@@ -8,7 +8,7 @@ export function WhoWeAre() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-24 md:py-32 bg-muted/30">
+    <section id="about" className="py-20 md:py-28">
       <div className="section-container" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -16,10 +16,10 @@ export function WhoWeAre() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+          {/* <span className="text-primary font-semibold text-sm uppercase tracking-wider">
             About Us
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">
+          </span> */}
+          <h2 className="text-accent text-3xl md:text-5xl font-bold mt-4 mb-6">
             Who We Are?
           </h2>
           <div className="w-24 h-1 bg-gaming-gradient mx-auto rounded-full" />
@@ -33,7 +33,7 @@ export function WhoWeAre() {
             className="space-y-6"
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              The <strong className="text-foreground">SLIIT Gaming Community</strong> is the official gaming 
+              The <strong className=" text-primary">SLIIT Gaming Community</strong> is the official gaming 
               society of Sri Lanka Institute of Information Technology. We're a passionate collective of 
               gamers, esports enthusiasts, and tech lovers united by our love for gaming culture.
             </p>

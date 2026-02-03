@@ -1,9 +1,15 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import gsap from "gsap";
+import { TextPlugin } from "gsap/TextPlugin";
+import gcLogo from "@/assets/gc-logo2.png";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
 const heroImages = [
   { src: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80", alt: "Esports gaming tournament" },
@@ -17,7 +23,7 @@ const controllerSymbols = [
     id: "circle",
     path: "M50,0 A50,50 0 1,1 50,100 A50,50 0 1,1 50,0",
     viewBox: "0 0 100 100",
-    size: { base: 60, md: 80, lg: 100 },
+    size: { base: 30, md: 80, lg: 100 },
     position: { top: "15%", left: "8%" },
     animation: { x: [0, 15, 0], y: [0, -20, 0] },
     duration: 8,
@@ -26,7 +32,7 @@ const controllerSymbols = [
     id: "cross",
     path: "M35,0 L65,0 L65,35 L100,35 L100,65 L65,65 L65,100 L35,100 L35,65 L0,65 L0,35 L35,35 Z",
     viewBox: "0 0 100 100",
-    size: { base: 50, md: 70, lg: 90 },
+    size: { base: 25, md: 70, lg: 90 },
     position: { top: "25%", right: "10%" },
     animation: { x: [0, -20, 0], y: [0, 15, 0] },
     duration: 10,
@@ -35,7 +41,7 @@ const controllerSymbols = [
     id: "triangle",
     path: "M50,5 L95,90 L5,90 Z",
     viewBox: "0 0 100 100",
-    size: { base: 55, md: 75, lg: 95 },
+    size: { base: 30, md: 75, lg: 95 },
     position: { bottom: "30%", left: "5%" },
     animation: { x: [0, 10, 0], y: [0, 12, 0] },
     duration: 9,
@@ -44,7 +50,7 @@ const controllerSymbols = [
     id: "square",
     path: "M10,10 L90,10 L90,90 L10,90 Z",
     viewBox: "0 0 100 100",
-    size: { base: 45, md: 65, lg: 85 },
+    size: { base: 25, md: 65, lg: 85 },
     position: { bottom: "25%", right: "8%" },
     animation: { x: [0, -12, 0], y: [0, -18, 0] },
     duration: 11,
@@ -53,7 +59,7 @@ const controllerSymbols = [
     id: "trigger-left",
     path: "M10,50 Q10,10 50,10 Q90,10 90,50 L80,90 Q50,95 20,90 Z",
     viewBox: "0 0 100 100",
-    size: { base: 40, md: 55, lg: 70 },
+    size: { base: 20, md: 55, lg: 70 },
     position: { top: "45%", left: "12%" },
     animation: { x: [0, 8, 0], y: [0, -10, 0] },
     duration: 12,
@@ -62,7 +68,7 @@ const controllerSymbols = [
     id: "trigger-right",
     path: "M10,50 Q10,10 50,10 Q90,10 90,50 L80,90 Q50,95 20,90 Z",
     viewBox: "0 0 100 100",
-    size: { base: 40, md: 55, lg: 70 },
+    size: { base: 20, md: 55, lg: 70 },
     position: { top: "40%", right: "12%" },
     animation: { x: [0, -8, 0], y: [0, 12, 0] },
     duration: 13,
@@ -175,6 +181,12 @@ export function HeroSection() {
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subheadlineRef = useRef<HTMLParagraphElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -190,15 +202,110 @@ export function HeroSection() {
     };
   }, [emblaApi]);
 
+  // GSAP Text Animation
+  useEffect(() => {
+    if (headlineRef.current) {
+      gsap.to(headlineRef.current, {
+        duration: 1.5,
+        delay: 0.3,
+        text: {
+          value: "Level Up Your Gaming Journey",
+          speed: 0.4,
+        },
+        ease: "power1.inOut",
+      });
+    }
+
+    if (subheadlineRef.current) {
+      gsap.to(subheadlineRef.current, {
+        duration: 2,
+        delay: 1.2,
+        text: {
+          value: "Join Sri Lanka's premier university gaming community. Compete, connect, and create legendary moments with fellow gamers at SLIIT.",
+          speed: 0.8,
+        },
+        ease: "power1.inOut",
+      });
+    }
+
+    if (logoRef.current && sectionRef.current) {
+      gsap.fromTo(
+        logoRef.current,
+        { scale: 1, opacity: 1 },
+        {
+          scale: 0.7,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    // Parallax background effect
+    if (bgRef.current && sectionRef.current) {
+      gsap.to(bgRef.current, {
+        y: -80,
+        scale: 1.08,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
+
+    // Fade-in and slight upward motion for content
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 80 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }
+  }, []);
+
   const currentImage = heroImages[selectedIndex].src;
+
+  const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
+
+  // Track mouse movement for spotlight
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setCursor({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  }
+  function handleMouseLeave() {
+    setCursor(null);
+  }
 
   return (
     <section
+      ref={sectionRef}
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Background Carousel */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" ref={bgRef}>
         <div ref={emblaRef} className="h-full overflow-hidden">
           <div className="flex h-full">
             {heroImages.map((image, index) => (
@@ -212,6 +319,17 @@ export function HeroSection() {
             ))}
           </div>
         </div>
+        {/* Overlay with cursor spotlight */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: cursor
+              ? `radial-gradient(circle 160px at ${cursor.x}px ${cursor.y}px, transparent 0%, rgba(20,20,20,0.7) 80%)`
+              : "rgba(20,20,20,0.7)",
+            transition: "background 0.2s",
+            zIndex: 1,
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
       </div>
 
@@ -258,7 +376,13 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="section-container relative z-10 text-center">
+      <div className="section-container relative z-10 text-center" ref={contentRef}>
+        <img
+          ref={logoRef}
+          src={gcLogo}
+          alt="SLIIT Gaming Community Logo"
+          className="mx-auto mb-8 w-32 md:w-40 lg:w-56"
+        />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -266,7 +390,7 @@ export function HeroSection() {
           className="max-w-4xl mx-auto"
         >
           {/* Badge */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -274,29 +398,19 @@ export function HeroSection() {
           >
             <Users className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">500+ Active Members</span>
-          </motion.div>
+          </motion.div> */}
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+          {/* Headline with GSAP */}
+          <h1
+            ref={headlineRef}
             className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6"
-          >
-            Level Up Your
-            <span className="block text-accent">Gaming Journey</span>
-          </motion.h1>
+          />
 
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+          {/* Subheadline with GSAP */}
+          <p
+            ref={subheadlineRef}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
-          >
-            Join Sri Lanka's premier university gaming community. Compete, connect, 
-            and create legendary moments with fellow gamers at SLIIT.
-          </motion.p>
+          />
 
           {/* CTA Buttons */}
           <motion.div
@@ -313,6 +427,7 @@ export function HeroSection() {
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
+              onClick={() => window.location.href = "/community"}
               size="lg"
               variant="outline"
               className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
@@ -322,7 +437,7 @@ export function HeroSection() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
@@ -340,7 +455,7 @@ export function HeroSection() {
                 <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
               </div>
             ))}
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

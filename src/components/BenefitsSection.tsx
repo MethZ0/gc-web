@@ -59,7 +59,7 @@ export function BenefitsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="membership" className="py-24 md:py-32">
+    <section id="membership" className="py-20 md:py-28">
       <div className="section-container" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -67,13 +67,13 @@ export function BenefitsSection() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+          {/* <span className="text-primary font-semibold text-sm uppercase tracking-wider">
             Membership
-          </span>
+          </span> */}
           <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">
             Benefits of Joining
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-primary text-lg">
             Unlock exclusive perks and become part of Sri Lanka's most vibrant gaming community.
           </p>
           <div className="w-24 h-1 bg-gaming-gradient mx-auto rounded-full mt-6" />
@@ -90,7 +90,7 @@ export function BenefitsSection() {
               className="gaming-card p-6 text-center group"
             >
               <div className="w-14 h-14 mx-auto rounded-xl bg-gaming-gradient flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
-                <benefit.icon className="w-7 h-7 text-primary-foreground" />
+                <benefit.icon className="w-7 h-7 text-accent" />
               </div>
               <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
               <p className="text-sm text-muted-foreground">{benefit.description}</p>
