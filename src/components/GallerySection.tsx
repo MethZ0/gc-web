@@ -4,6 +4,13 @@ import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// Import images from assets
+import item1 from "../assets/events/01/item1.jpg";
+import item2 from "../assets/events/01/item2.jpg";
+import item3 from "../assets/events/01/item3.jpg";
+import item4 from "../assets/events/01/item4.jpg";
+import item5 from "../assets/events/01/item5.jpg";
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface GalleryImage {
@@ -17,56 +24,56 @@ interface GalleryImage {
 const galleryImages: GalleryImage[] = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=600&fit=crop",
+    src: item1,
     title: "Championship Finals",
     event: "SLIIT Esports Championship 2024",
     date: "March 2024",
   },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
+    src: item2,
     title: "Gaming Setup Arena",
     event: "LAN Party Night",
     date: "October 2023",
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&h=600&fit=crop",
+    src: item3,
     title: "Team Competition",
     event: "Valorant Campus League",
     date: "January 2024",
   },
   {
     id: 4,
-    src: "https://images.unsplash.com/photo-1552820728-8b83bb6b2b0f?w=800&h=600&fit=crop",
+    src: item4,
     title: "Award Ceremony",
     event: "Annual Gaming Awards",
     date: "December 2023",
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1493711662062-fa541f7f3d24?w=800&h=600&fit=crop",
+    src: item5,
     title: "Mobile Gaming Zone",
     event: "Mobile Gaming Fest",
     date: "December 2023",
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=800&h=600&fit=crop",
+    src: item1,
     title: "Community Meetup",
     event: "Gamer's Night Out",
     date: "November 2023",
   },
   {
     id: 7,
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+    src: item2,
     title: "Workshop Session",
     event: "Pro Gaming Workshop",
     date: "February 2024",
   },
   {
     id: 8,
-    src: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=800&h=600&fit=crop",
+    src: item3,
     title: "Streaming Setup",
     event: "Content Creator Meetup",
     date: "September 2023",
